@@ -17,7 +17,6 @@ A clean, well-documented PyTorch implementation of a Multi-Layer Perceptron (MLP
 - [Usage](#usage)
 - [Known Issue](#known-issue)
 - [Future Improvements](#future-improvements)
-- [License](#license)
 
 ---
 
