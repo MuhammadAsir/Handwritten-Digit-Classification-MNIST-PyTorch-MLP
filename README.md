@@ -135,7 +135,7 @@ pip install torch numpy matplotlib scikit-learn seaborn
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/<your-username>/mnist-mlp-pytorch.git
+   git clone https://github.com/MuhammadAsir/mnist-mlp-pytorch.git
    cd mnist-mlp-pytorch
    ```
 2. Ensure the `.npy` data files are in the project directory (or update the paths in the notebook).
