@@ -47,7 +47,7 @@ mnist-mlp-pytorch/
 ---
 
 ## Dataset
-
+Source:https://www.kaggle.com/datasets/hichamachahboun/mnist-handwritten-digits
 MNIST-style handwritten digits, stored as NumPy arrays of raw pixel values (0–255).
 
 | File | Shape | Description |
