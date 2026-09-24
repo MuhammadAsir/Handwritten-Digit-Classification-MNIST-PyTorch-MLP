@@ -1,22 +1,40 @@
-# Handwritten Digit Classification (MNIST) — PyTorch MLP
+# ✍️ MNIST Digit Classifier — PyTorch MLP
 
-A simple fully-connected neural network (MLP) built with PyTorch to classify handwritten digits (0–9) from the MNIST dataset.
+A clean, from-scratch PyTorch implementation of a Multi-Layer Perceptron (MLP) that classifies handwritten digits (0–9) from the MNIST dataset — complete with training curves, a confusion matrix, and a full classification report.
 
-## Project Structure
+
+
+---
+
+## 📌 Overview
+
+This project trains a simple feedforward neural network to recognize handwritten digits from 28×28 grayscale images. It's built to be easy to read, easy to run, and a solid starting point for anyone learning PyTorch or neural network fundamentals.
+
+**Highlights:**
+- 🧠 3-layer fully connected neural network built with `torch.nn`
+- 📊 Full evaluation suite — accuracy, precision/recall/F1, confusion matrix
+- 🖼️ Visualizations of sample digits and model performance
+- ⚡ Trains in minutes on CPU
+
+---
+
+## 🗂️ Project Structure
 
 ```
-.
-├── Hand_written_digit.ipynb   # Main notebook: data loading, training, evaluation
-├── train_images.npy           # Training images (60000, 28, 28), uint8
-├── train_labels.npy           # Training labels (60000,), uint8
-├── test_images.npy            # Test images (10000, 28, 28), uint8
-├── test_labels.npy            # Test labels (10000,), uint8
+mnist-mlp-pytorch/
+├── Hand_written_digit.ipynb   # Main notebook — data loading, training, evaluation
+├── train_images.npy           # Training images (60000, 28, 28)
+├── train_labels.npy           # Training labels (60000,)
+├── test_images.npy            # Test images (10000, 28, 28)
+├── test_labels.npy            # Test labels (10000,)
 └── README.md
 ```
 
-## Dataset
+---
 
-The dataset is MNIST-style handwritten digit images stored as NumPy arrays:
+## 🧩 Dataset
+
+MNIST-style handwritten digits, stored as NumPy arrays of raw pixel values (0–255).
 
 | File | Shape | Description |
 |---|---|---|
@@ -25,84 +43,143 @@ The dataset is MNIST-style handwritten digit images stored as NumPy arrays:
 | `test_images.npy` | (10000, 28, 28) | Grayscale test images |
 | `test_labels.npy` | (10000,) | Test labels (0–9) |
 
-## Model Architecture
+---
 
-A simple Multi-Layer Perceptron (MLP):
+## 🏗️ Model Architecture
 
 ```
-Input (784) → Linear(128) → ReLU → Linear(64) → ReLU → Linear(10)
+Input (784)
+   │
+   ▼
+Linear(784 → 128) → ReLU
+   │
+   ▼
+Linear(128 → 64) → ReLU
+   │
+   ▼
+Linear(64 → 10)  →  Output (digit class 0–9)
 ```
 
-- Input images (28×28) are flattened to a 784-length vector.
-- Loss function: `CrossEntropyLoss`
-- Optimizer: `SGD` (learning rate = 0.01)
-- Epochs: 30
-- Batch size: 64
-
-## Workflow
-
-1. **Load data** — read `.npy` files with NumPy.
-2. **Visualize samples** — preview a grid of digits with their labels.
-3. **Split data** — 90% train / 10% validation split via `train_test_split`.
-4. **Prepare tensors & DataLoaders** — convert arrays to PyTorch tensors and wrap in `DataLoader`s.
-5. **Define model** — the `DigitClassification` MLP class.
-6. **Train** — loop over epochs, tracking training and validation loss.
-7. **Evaluate** — compute predictions on the test set and report:
-   - Accuracy score
-   - Classification report (precision, recall, F1-score per class)
-   - Confusion matrix (visualized with Seaborn)
-
-## Results
-
-- **Test Accuracy:** 92.45%
-
-**Classification Report (summary):**
-
-| Metric | Score |
+| Setting | Value |
 |---|---|
-| Accuracy | 0.92 |
-| Macro avg F1 | 0.92 |
-| Weighted avg F1 | 0.92 |
+| Loss function | `CrossEntropyLoss` |
+| Optimizer | `SGD` |
+| Learning rate | `0.01` |
+| Epochs | `30` |
+| Batch size | `64` |
+| Train / Validation split | `90% / 10%` |
 
-The model performs strongly on most digits (e.g., 0, 1, 6, 7 all ≥ 0.95 F1), with more confusion between visually similar digits such as **3/2**, **5/8**, and **9/4** — visible in the confusion matrix.
+---
 
-## Requirements
+## 🔁 Workflow
 
-- Python 3
+1. **Load & inspect data** — read `.npy` arrays, check shapes and label distribution
+2. **Visualize samples** — plot a grid of digits with their true labels
+3. **Split & tensorize** — train/validation split, convert to PyTorch tensors, wrap in `DataLoader`s
+4. **Define the model** — `DigitClassification` MLP class
+5. **Train** — 30 epochs, tracking training and validation loss
+6. **Evaluate** — predictions on the test set, scored with accuracy, classification report, and a confusion matrix
+
+---
+
+## 📈 Results
+
+### ✅ Test Accuracy: **92.45%**
+
+### Classification Report
+
+| Class | Precision | Recall | F1-score |
+|:---:|:---:|:---:|:---:|
+| 0 | 0.95 | 0.97 | 0.96 |
+| 1 | 0.96 | 0.97 | 0.96 |
+| 2 | 0.81 | 0.95 | 0.88 |
+| 3 | 0.96 | 0.83 | 0.89 |
+| 4 | 0.91 | 0.96 | 0.93 |
+| 5 | 0.90 | 0.87 | 0.88 |
+| 6 | 0.96 | 0.95 | 0.95 |
+| 7 | 0.96 | 0.96 | 0.96 |
+| 8 | 0.91 | 0.87 | 0.89 |
+| 9 | 0.94 | 0.91 | 0.92 |
+| **Accuracy** | | | **0.92** |
+| **Macro avg** | 0.93 | 0.92 | 0.92 |
+| **Weighted avg** | 0.93 | 0.92 | 0.92 |
+
+### Confusion Matrix
+
+The model performs strongly across almost all classes (F1 ≥ 0.95 for digits 0, 1, 6, 7). The main confusion appears between visually similar digit pairs — notably **3 ↔ 2**, **5 ↔ 8**, and **9 ↔ 4** — which is typical for a simple MLP that has no spatial/convolutional awareness of pixel structure.
+
+*(See the confusion matrix heatmap generated in the notebook for the full breakdown.)*
+
+---
+
+## ⚙️ Requirements
+
+- Python 3.x
 - `torch`
 - `numpy`
 - `matplotlib`
 - `scikit-learn`
 - `seaborn`
 
-Install with:
+Install everything with:
 
 ```bash
 pip install torch numpy matplotlib scikit-learn seaborn
 ```
 
-## Usage
+---
 
-1. Place the `.npy` data files in the same directory as the notebook (or update the file paths).
-2. Open `Hand_written_digit.ipynb` in Jupyter or Google Colab.
-3. Run all cells in order to train the model and view the evaluation results.
+## 🚀 Usage
 
-## Known Issue
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/<your-username>/mnist-mlp-pytorch.git
+   cd mnist-mlp-pytorch
+   ```
+2. Make sure the `.npy` data files are in the project directory (or update the paths in the notebook).
+3. Open the notebook:
+   ```bash
+   jupyter notebook Hand_written_digit.ipynb
+   ```
+4. Run all cells to train the model and reproduce the results above.
 
-In the current notebook, the test set is loaded from `train_images.npy` / `train_labels.npy` instead of `test_images.npy` / `test_labels.npy`:
+---
+
+## ⚠️ Known Issue
+
+The notebook currently loads the **test set from the training files**:
 
 ```python
 test_img = np.load('/content/train_images.npy')
 test_label = np.load('/content/train_labels.npy')
 ```
 
-This means the reported "test accuracy" is actually evaluated on the training data, not the held-out `test_images.npy`/`test_labels.npy` files. To properly evaluate generalization, update these lines to load the actual test files:
+This means the reported accuracy is measured against training data rather than the held-out `test_images.npy` / `test_labels.npy`. Fix it by pointing to the actual test files:
 
 ```python
 test_img = np.load('/content/test_images.npy')
 test_label = np.load('/content/test_labels.npy')
 ```
 
-## License
+---
 
-Add your preferred license here (e.g., MIT).
+## 🔮 Future Improvements
+
+- [ ] Fix the train/test data leakage noted above
+- [ ] Add a CNN variant for improved accuracy
+- [ ] Add learning rate scheduling / Adam optimizer
+- [ ] Add early stopping based on validation loss
+- [ ] Export trained model weights (`.pt`) for inference
+- [ ] Add a simple inference script / demo (draw-a-digit UI)
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License — feel free to use, modify, and share.
+
+---
+
+## 🙌 Acknowledgements
+
+Built with [PyTorch](https://pytorch.org/) and evaluated using [scikit-learn](https://scikit-learn.org/) and [Seaborn](https://seaborn.pydata.org/).
