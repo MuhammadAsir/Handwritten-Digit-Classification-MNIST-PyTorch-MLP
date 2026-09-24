@@ -1,24 +1,39 @@
 # ✍️ MNIST Digit Classifier — PyTorch MLP
 
-A clean, from-scratch PyTorch implementation of a Multi-Layer Perceptron (MLP) that classifies handwritten digits (0–9) from the MNIST dataset — complete with training curves, a confusion matrix, and a full classification report.
-
+A clean, well-documented PyTorch implementation of a Multi-Layer Perceptron (MLP) that classifies handwritten digits (0–9) from the MNIST dataset.
 
 
 ---
 
-## 📌 Overview
+## Table of Contents
 
-This project trains a simple feedforward neural network to recognize handwritten digits from 28×28 grayscale images. It's built to be easy to read, easy to run, and a solid starting point for anyone learning PyTorch or neural network fundamentals.
-
-**Highlights:**
-- 🧠 3-layer fully connected neural network built with `torch.nn`
-- 📊 Full evaluation suite — accuracy, precision/recall/F1, confusion matrix
-- 🖼️ Visualizations of sample digits and model performance
-- ⚡ Trains in minutes on CPU
+- [Overview](#overview)
+- [Project Structure](#project-structure)
+- [Dataset](#dataset)
+- [Model Architecture](#model-architecture)
+- [Workflow](#workflow)
+- [Results](#results)
+- [Requirements](#requirements)
+- [Usage](#usage)
+- [Known Issue](#known-issue)
+- [Future Improvements](#future-improvements)
+- [License](#license)
 
 ---
 
-## 🗂️ Project Structure
+## Overview
+
+This project trains a simple feedforward neural network to recognize handwritten digits from 28×28 grayscale images. It's designed to be easy to read, easy to run, and a solid reference point for anyone learning PyTorch or neural network fundamentals.
+
+**Highlights**
+- 3-layer fully connected neural network built with `torch.nn`
+- Full evaluation suite: accuracy, precision/recall/F1, confusion matrix
+- Clean, minimal codebase — no unnecessary abstraction
+- Trains in a few minutes on CPU, no GPU required
+
+---
+
+## Project Structure
 
 ```
 mnist-mlp-pytorch/
@@ -32,7 +47,7 @@ mnist-mlp-pytorch/
 
 ---
 
-## 🧩 Dataset
+## Dataset
 
 MNIST-style handwritten digits, stored as NumPy arrays of raw pixel values (0–255).
 
@@ -45,19 +60,13 @@ MNIST-style handwritten digits, stored as NumPy arrays of raw pixel values (0–
 
 ---
 
-## 🏗️ Model Architecture
+## Model Architecture
 
 ```
 Input (784)
-   │
-   ▼
-Linear(784 → 128) → ReLU
-   │
-   ▼
-Linear(128 → 64) → ReLU
-   │
-   ▼
-Linear(64 → 10)  →  Output (digit class 0–9)
+   → Linear(784 → 128) → ReLU
+   → Linear(128 → 64)  → ReLU
+   → Linear(64 → 10)   → Output (digit class 0–9)
 ```
 
 | Setting | Value |
@@ -71,22 +80,20 @@ Linear(64 → 10)  →  Output (digit class 0–9)
 
 ---
 
-## 🔁 Workflow
+## Workflow
 
-1. **Load & inspect data** — read `.npy` arrays, check shapes and label distribution
-2. **Visualize samples** — plot a grid of digits with their true labels
+1. **Load & inspect data** — read `.npy` arrays, verify shapes and label distribution
+2. **Visualize samples** — preview a grid of digits with their true labels
 3. **Split & tensorize** — train/validation split, convert to PyTorch tensors, wrap in `DataLoader`s
 4. **Define the model** — `DigitClassification` MLP class
 5. **Train** — 30 epochs, tracking training and validation loss
-6. **Evaluate** — predictions on the test set, scored with accuracy, classification report, and a confusion matrix
+6. **Evaluate** — predictions on the test set, scored with accuracy, a classification report, and a confusion matrix
 
 ---
 
-## 📈 Results
+## Results
 
-### ✅ Test Accuracy: **92.45%**
-
-### Classification Report
+**Test Accuracy: 92.45%**
 
 | Class | Precision | Recall | F1-score |
 |:---:|:---:|:---:|:---:|
@@ -104,15 +111,11 @@ Linear(64 → 10)  →  Output (digit class 0–9)
 | **Macro avg** | 0.93 | 0.92 | 0.92 |
 | **Weighted avg** | 0.93 | 0.92 | 0.92 |
 
-### Confusion Matrix
-
-The model performs strongly across almost all classes (F1 ≥ 0.95 for digits 0, 1, 6, 7). The main confusion appears between visually similar digit pairs — notably **3 ↔ 2**, **5 ↔ 8**, and **9 ↔ 4** — which is typical for a simple MLP that has no spatial/convolutional awareness of pixel structure.
-
-*(See the confusion matrix heatmap generated in the notebook for the full breakdown.)*
+The model performs strongly across most classes, with F1-scores of 0.95 or higher for digits 0, 1, 6, and 7. The main confusion happens between visually similar digit pairs — notably **3 ↔ 2**, **5 ↔ 8**, and **9 ↔ 4** — which is expected for a simple MLP with no spatial awareness of pixel structure.
 
 ---
 
-## ⚙️ Requirements
+## Requirements
 
 - Python 3.x
 - `torch`
@@ -121,7 +124,7 @@ The model performs strongly across almost all classes (F1 ≥ 0.95 for digits 0,
 - `scikit-learn`
 - `seaborn`
 
-Install everything with:
+Install with:
 
 ```bash
 pip install torch numpy matplotlib scikit-learn seaborn
@@ -129,14 +132,14 @@ pip install torch numpy matplotlib scikit-learn seaborn
 
 ---
 
-## 🚀 Usage
+## Usage
 
 1. Clone the repo:
    ```bash
    git clone https://github.com/<your-username>/mnist-mlp-pytorch.git
    cd mnist-mlp-pytorch
    ```
-2. Make sure the `.npy` data files are in the project directory (or update the paths in the notebook).
+2. Ensure the `.npy` data files are in the project directory (or update the paths in the notebook).
 3. Open the notebook:
    ```bash
    jupyter notebook Hand_written_digit.ipynb
@@ -145,7 +148,7 @@ pip install torch numpy matplotlib scikit-learn seaborn
 
 ---
 
-## ⚠️ Known Issue
+## Known Issue
 
 The notebook currently loads the **test set from the training files**:
 
@@ -163,23 +166,18 @@ test_label = np.load('/content/test_labels.npy')
 
 ---
 
-## 🔮 Future Improvements
+## Future Improvements
 
 - [ ] Fix the train/test data leakage noted above
 - [ ] Add a CNN variant for improved accuracy
-- [ ] Add learning rate scheduling / Adam optimizer
+- [ ] Try Adam optimizer with learning rate scheduling
 - [ ] Add early stopping based on validation loss
 - [ ] Export trained model weights (`.pt`) for inference
-- [ ] Add a simple inference script / demo (draw-a-digit UI)
+- [ ] Add a simple inference script or demo
 
 ---
 
-## 📄 License
-
-This project is licensed under the MIT License — feel free to use, modify, and share.
 
 ---
 
-## 🙌 Acknowledgements
-
-Built with [PyTorch](https://pytorch.org/) and evaluated using [scikit-learn](https://scikit-learn.org/) and [Seaborn](https://seaborn.pydata.org/).
+Built with [PyTorch](https://pytorch.org/), evaluated using [scikit-learn](https://scikit-learn.org/) and [Seaborn](https://seaborn.pydata.org/).
